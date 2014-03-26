@@ -4,7 +4,8 @@
   <meta charset="utf-8">
 
   <title>{{ g.title }} - 金数据 PUSH 代理</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <link href="//libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css" rel="stylesheet">
   <link href="//libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
   <link href="{{url_for('static', filename='application.css')}}" rel="stylesheet">
@@ -16,12 +17,6 @@
         <a class="navbar-brand" href="{{ url_for('home') }}">PUSH PROXY</a>
       </div>
       <div class="navbar-collapse collapse">
-        <form class="navbar-form navbar-left" role="search">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="输入表单编号...">
-          </div>
-          <button type="submit" class="btn btn-primary">前往</button>
-        </form>
       </div>
     </div>
   </nav>

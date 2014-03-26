@@ -1,3 +1,4 @@
+import json
 from uuid import uuid4
 
 from flask import Flask
@@ -15,13 +16,13 @@ db = kvdb.Client(debug=True)
 def home():
     return render_template('index.html')
 
-@app.route('/form/<form_id>', methods=['GET'])
-def form(form_id):
+@app.route('/form/', methods=['GET'])
+def form():
     return render_template('form.html', form_id=form_id)
 
-@app.route('/form/<form_id>', methods=['POST'])
-def entry(form_id):
-    filter = "entry_%s_" % form_id
+@app.route('/entry/', methods=['GET'])
+def entry():
+    filter = 'entry_%s_%s' % (request.args['key'], request.args['token'])
     entries = get_by_prefix(filter, limit=1)
 
     for entry in entries:
@@ -29,14 +30,14 @@ def entry(form_id):
 
     return None
 
-@app.route('/jinshuju/callback/<form_id>', methods=['POST'])
-def callback(form_id):
-    app.logger.info("Receiving data from form: %s", form_id)
+@app.route('/proxy/<token>', methods=['POST'])
+def proxy(token):
+    form = json.loads(request.data)
+    key = form['form']
 
-    entry_id = uuid4().hex
-    app.logger.info('  entry id: %s', entry_id)
+    print('Accept http-push on form', key, 'with token', token)
 
-    entry_key = 'entry_%s_%s' % (id, entry_id)
+    entry_key = 'entry_%s_%s_%s' % (key, token, uuid4().hex)
     db.set(entry_key, request.data)
 
     return 'I got it. --- http://pushproxy.sinaapp.com/'
