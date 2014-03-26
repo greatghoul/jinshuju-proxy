@@ -1,9 +1,12 @@
+# coding: utf-8
+
 import json
 from uuid import uuid4
 
 from flask import Flask
 from flask import request
 from flask import render_template
+from flask import jsonify
 
 from sae import kvdb
 
@@ -16,19 +19,34 @@ db = kvdb.Client(debug=True)
 def home():
     return render_template('index.html')
 
-@app.route('/form/', methods=['GET'])
+@app.route('/form', methods=['GET'])
 def form():
-    return render_template('form.html', form_id=form_id)
+    key    = request.args.get('key', None)
+    token  = request.args.get('token', None)
+    target = request.args.get('target', None)
 
-@app.route('/entry/', methods=['GET'])
-def entry():
+    if key and token and target:
+        form = { 'key': key, 'token': token, target: target }
+        return render_template('form.html', form=form)
+    else:
+        return render_template('error.html', message=u'无效的表单或推送地址')
+
+
+@app.route('/entry', methods=['GET'])
+def entry_get():
     filter = 'entry_%s_%s' % (request.args['key'], request.args['token'])
-    entries = get_by_prefix(filter, limit=1)
+    entries = db.get_by_prefix(filter, limit=1)
 
     for entry in entries:
         return entry
 
-    return None
+    return 'null'
+
+@app.route('/entry', methods=['DELETE'])
+def entry_destroy():
+    db.delete(request.args['entry_key'])
+
+    return jsonify(success=True)
 
 @app.route('/proxy/<token>', methods=['POST'])
 def proxy(token):

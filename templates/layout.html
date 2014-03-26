@@ -7,8 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <link href="//libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css" rel="stylesheet">
-  <link href="//libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
   <link href="{{url_for('static', filename='application.css')}}" rel="stylesheet">
+  {% block styles %}{% endblock %}
+
+  <script type="text/javascript">
+    var ENV = {
+      URL_ROOT: '{{ request.url_root[0:-1] }}'
+    };
+  </script>
 </head>
 <body>
   <nav class="navbar navbar-default" role="navigation">
@@ -21,12 +27,13 @@
     </div>
   </nav>
 
-  <div id="content" class="container">
+  <div class="container">
     {% block content %}{% endblock %}
   </div>
 
   <script src="//libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="//libs.baidu.com/bootstrap/3.0.3/js/bootstrap.js"></script>
   <script src="{{url_for('static', filename='application.js')}}"></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

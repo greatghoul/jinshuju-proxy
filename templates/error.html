@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="alert alert-danger">
+<a href="{{ url_for('home') }}" class="alert-link pull-right">返回</a>
+<strong>错误：</strong>
+{{ message }}
+</div>
+{% endblock %}

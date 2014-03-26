@@ -3,3 +3,10 @@
 {% block content %}
 fdsafdsa
 {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  var form = {{ form | tojson }};
+</script>
+<script src="{{ url_for('static', filename='form.js') }}"></script>
+{% endblock %}
