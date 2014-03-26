@@ -26,7 +26,7 @@ def form():
     target = request.args.get('target', None)
 
     if key and token and target:
-        form = { 'key': key, 'token': token, target: target }
+        form = { 'key': key, 'token': token, 'target': target }
         return render_template('form.html', form=form)
     else:
         return render_template('error.html', message=u'无效的表单或推送地址')
